@@ -1,7 +1,8 @@
 #include "good.h"
 #include <stdlib.h>
 #include "shelf.h"
-
+#include <stdio.h>
+#include <string.h>
 
 struct good
 {
@@ -13,6 +14,13 @@ struct good
 };
 
 
+
+good_t * good_alloc(){
+  good_t *tmp = calloc(1, sizeof(good_t));
+  return tmp;
+}
+
+
 good_t * good_create(char *name, char *desc, int price){
   //create new good without any shelves
   good_t *new_good = (good_t *)calloc(1,sizeof(good_t)); 
@@ -22,6 +30,7 @@ good_t * good_create(char *name, char *desc, int price){
   new_good->shelves = list_new();
   return new_good;
 }
+
 
 
 void good_dealloc(good_t *good){
@@ -73,10 +82,28 @@ list_t *good_get_shelves(good_t *good){
   return good->shelves;
 }
 
+
+int good_get_total_count(good_t *good){
+  // good->shelves->count ++ good->shelves->next->count
+
+  int n = 0;
+  
+  shelf_t **shelf_list = (shelf_t**)list_array(good->shelves);
+
+  for(int i = 0; i < list_length(good->shelves); i++){
+    n += shelf_get_count(shelf_list[i]);
+  }
+
+  free(shelf_list);
+  return n;
+}
+
+
 void good_set_name(good_t **good, char *name){
   free((*good)->name);
   (*good)->name = name;
 }
+
 
 void good_set_desc(good_t **good, char *desc){
   free((*good)->desc);
@@ -88,4 +115,20 @@ void good_set_price(good_t **good, int price){
 }
 
 
+good_t *good_copy(good_t *good){
+    good_t *new_good = (good_t *)calloc(1,sizeof(good_t));
+    new_good->name = (char *)calloc(1,strlen(good->name)*sizeof(char));
+    new_good->desc = (char *)calloc(1,strlen(good->name)*sizeof(char));
+    *new_good->name = *good->name;
+    *new_good->desc = *good->desc;
+    
+    new_good->price = good->price;
+    new_good->shelves = list_new();
+    
+    return new_good;
+}
 
+void good_assign(good_t *good1, good_t *good2){
+    *good1 = *good2;
+    
+}

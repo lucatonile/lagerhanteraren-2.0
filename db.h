@@ -4,8 +4,9 @@
 
 #include "good.h"
 #include "tree.h"
-
+#include "pallet.h"
 typedef struct db db_t;
+
 
 
 /// \file db.h
@@ -69,13 +70,25 @@ void db_remove_good_at_index(db_t *db, int i, bool dealloc);
 /// \param db pointer to the database
 /// \param key key to the good to be deleted
 /// \dealloc set true if you want the good to be dealloced else set to false
+
+
+
+
 void db_remove_good(db_t *db,char *key,bool dealloc);
 
 
 
+void db_record_add(db_t *db,good_t *old_good);
 
+void db_record_remove(db_t *db, good_t *removed_good);
 
+void db_record_edit(db_t *db,good_t *old,good_t *new);
 
+bool undoable(db_t *db);
+
+void undo(db_t *db);
+
+pallet_t *db_get_pallet(db_t *db);
 
 
 #endif

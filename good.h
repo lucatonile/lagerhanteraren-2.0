@@ -7,6 +7,7 @@
 
 typedef struct good good_t;
 
+
 /// \file good.h
 /// \author Casper Strömberg
 /// \version 1.0
@@ -74,4 +75,27 @@ void good_set_desc(good_t **good, char *desc);
 /// \param price the new price 
 void good_set_price(good_t **good,int price);
 
+
+
+good_t * good_alloc();
+
+
+
+good_t *good_copy(good_t *good);
+
+void good_assign(good_t *good1, good_t *good2);
+
+
+
+
+
+
+int good_get_total_count(good_t *good);
+
+
+
+
+
+
 #endif
+

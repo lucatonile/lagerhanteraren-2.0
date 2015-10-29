@@ -5,7 +5,7 @@
 
 typedef struct list list_t;
 typedef struct list_el list_el_t;
-
+typedef void (* dealloc_function)(void *);
 
 /// Linked list
 
@@ -80,7 +80,7 @@ bool list_insert(list_t **list, int index, void *data);
 /// \param elem a pointer to where the element can be stored
 /// \returns true if succeeded, else 
 /// 
-bool list_remove(list_t **list, int index,void **elem);
+bool list_remove(list_t **list, int index,void dealloc_function(void *));
 
 /// Returns the element at a given index
 /// \param list  pointer to the list
@@ -99,12 +99,17 @@ void *list_last(list_t *list);
 /// \returns the length of list
 int list_length(list_t *list);
 
+
 /// Traverse the list with the provided function
 /// \param list the list
 /// \param f pointer to a function that should be used in the traverse
+
+
+
 void list_traverse(list_t *list,void (*f)(void *,int));
 
 void print_list(list_t *list);
+
 
 
 /// Dumps the linked list as a array
@@ -114,5 +119,9 @@ void **list_array(list_t *list);
 
 
 void list_dealloc(list_t *list, void dealloc_function(void *));
+
+
+void **list_array(list_t *list);
+
 
 #endif

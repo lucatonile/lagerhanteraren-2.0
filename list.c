@@ -5,14 +5,13 @@
 
 struct list_el{
 	void *data;
-	struct list_el *next; 
+	list_el_t *next;
 };
 
 
 struct list{
-	int count; 
-	struct list_el *last_el; 
-	struct list_el *first_el;
+	int count;
+	list_el_t *first_el;
 };
 
 
@@ -44,11 +43,7 @@ list_el_t *list_get_item(list_t *list, int index){
 	if(index < 0 && index != -1){
 		index = calculate_positive(index,list_length(list));
 	}
-	//special case for last
-	//speed increese 
-	if(index == -1){
-		return list->last_el;
-	}
+	
 
 	list_el_t *curent_list_item = list->first_el;
 	for(int i = 0; i<index; i++){
@@ -65,7 +60,10 @@ void * list_get(list_t *list, int index)
 {	
 	list_el_t *item = list_get_item(list,index);
 	return item->data;
+
 }
+
+	
 
 
 bool list_insert(list_t **list, int index, void *data)
@@ -84,15 +82,32 @@ bool list_insert(list_t **list, int index, void *data)
 	}else{
 		list_el_t *head = list_get_item(*list,index-1);
 		if(head == NULL){
+            free(new_element);
 			return false;
 		}
 		new_element->next = head->next;
 		head->next = new_element;
 	}
 
-	(*list)->last_el = new_element;
+
+	
 	(*list)->count++;
 	return true;		
+}
+
+
+
+void list_dealloc(list_t *list, void dealloc_function(void *)){
+  list_el_t *current_el = list->first_el;
+  while(current_el != NULL){
+    dealloc_function(current_el->data);
+    
+    list_el_t *p = current_el;
+    current_el = current_el->next;
+    free(p);
+  }
+  free(list);
+
 }
 
 
@@ -107,23 +122,14 @@ void list_traverse(list_t *list,void (*f)(void *,int)){
 
 }
 
-void list_dealloc(list_t *list, void dealloc_function(void *)){
-  list_el_t *current_el = list->first_el;
-  while(current_el != NULL){
-    dealloc_function(current_el->data);
-    
-    list_el_t *p = current_el;
-    current_el = current_el->next;
-    free(p);
-  }
-  free(list);
-}
 
-bool list_remove(list_t **list, int index, void **elem)
+
+bool list_remove(list_t **list, int index, dealloc_function dealloc)
 {
 	if(index < 0){
 		index = calculate_positive(index,(*list)->count);
 	}
+
 
 	if(index >=  (*list)->count){
 		return false;
@@ -131,25 +137,29 @@ bool list_remove(list_t **list, int index, void **elem)
 
 	if(index == 0){
 		
-		*elem = (*list)->first_el->data;
+		dealloc((*list)->first_el->data);
 		
-		list_el_t *p = (*list)->first_el;
+		list_el_t *next = (*list)->first_el->next;
 		
-		(*list)->first_el = (*list)->first_el->next;
+        free((*list)->first_el);
+		(*list)->first_el = next;
 		
-		free(p);
+		
 
 		
 		
 	}else{
 		list_el_t *head = list_get_item(*list,index-1);
+        list_el_t *next = head->next;
 		if(head == NULL){
 			//no element on index 
 			return false; 
 		}
-		*elem = head->next->data;
-		head->next = head->next->next;
-		free(head->next);
+		dealloc( head->next->data);
+        free(head->next);
+        
+		head->next = next;
+		
 	}
 
 	(*list)->count--;
@@ -196,7 +206,7 @@ void list_prepend(list_t **list, void *data)
 
 void **list_array(list_t *list){
 	int count = list_length(list);
-	void **arr = calloc(1,sizeof(void *)*count);
+	void **arr = malloc(sizeof(void *)*count);
 	list_el_t *current_el = list->first_el;
 
 	int i = 0;
@@ -208,7 +218,4 @@ void **list_array(list_t *list){
 
 	return arr;
 }
-
-
-
 

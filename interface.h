@@ -8,6 +8,11 @@
 /// \version 1.0
 /// \date 2015-10-12
 
+
+#include "db.h"
+#include "pallet.h"
+
+
 void print_welcome();
 
 
@@ -16,7 +21,10 @@ void print_welcome();
 /// \returns the inputed int
 int ask_question_int(char *q);
 
+
 /// add good 
+
+
 void add_goods_interf(db_t *db);
 
 void remove_goods_interf(db_t *db);
@@ -25,7 +33,14 @@ void list_goods_interface(db_t *db);
 
 void edit_good_interf(db_t *db);
 
-void regret_action_interf();
+void regret_action_interf(db_t *db);
+
+
+
+
+
+void shopping_interf(db_t *db);
 
 
 #endif
+

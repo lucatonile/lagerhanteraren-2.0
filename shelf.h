@@ -5,6 +5,7 @@
 
 typedef struct shelf shelf_t;
 
+
 /// \file shelf.h
 /// \author Casper Strömberg
 /// \version 1.0
@@ -28,7 +29,7 @@ void shelf_list_dealloc(list_t *list);
 /// shelf arrat sort
 /// depricated
 /// \bug does not work
-void shelf_array_sort(shelf_t *shelf_list, int length);
+
 
 
 /// get the char part of the shelf adress
@@ -63,4 +64,30 @@ void shelf_set_count(shelf_t **shlf,int count);
 
 
 
+
+
+
+
+
+
+void shelf_array_sort(shelf_t **shelf_list, int length);
+void shelf_array_name_sort(shelf_t **shelf_list, int length);
+
+
+
+//shelf get
+
+
+
+char * shelf_get_id(shelf_t *shelf);
+int shelf_get_arr_size(shelf_t **shelves);
+void shelf_array_dealloc(shelf_t **shelf_arr, int length);
+
+
+
+
+
+
+
 #endif
+

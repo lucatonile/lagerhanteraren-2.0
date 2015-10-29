@@ -47,6 +47,4 @@ void tree_debug(tree_t *tree);
 
 void tree_traverse_in_order(tree_t *tree, void (*f)(void *,int *) );
 
-
-
 #endif

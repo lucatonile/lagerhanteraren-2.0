@@ -132,7 +132,8 @@ tree_el_t **min_node(tree_el_t **node){
 void tree_free_element(tree_el_t *node){
 	free(node->key);
 	free(node);
-	
+	node = NULL;
+
 }
 
 bool tree_remove_element(tree_el_t **current_node,char *key, void **elem){
@@ -143,12 +144,16 @@ bool tree_remove_element(tree_el_t **current_node,char *key, void **elem){
 		if(*current_node == NULL){
 			return false;
 		}
+
 		printf("COMP: %s  %s",key,(*current_node)->key);
+
+
 		int comp = strcmp(key,(*current_node)->key);
 		if(comp == 0){
 		  
 //we found it
 			//delete 
+
 			printf("SET ELEM:%s",(*current_node)->key);
 			*elem = (*current_node)->data;
 			printf("SET ELEM:%p",elem);
@@ -158,6 +163,7 @@ bool tree_remove_element(tree_el_t **current_node,char *key, void **elem){
 				//no children
 				//tree_free_element((*current_node));
 			  
+
 				tree_free_element(*current_node);
 				*current_node = NULL;
 				
@@ -165,6 +171,7 @@ bool tree_remove_element(tree_el_t **current_node,char *key, void **elem){
 				//two children 
 			
 				tree_el_t **s = min_node(&(*current_node)->right);
+
 				
 				free((*current_node)->key);//free key
 				(*current_node)->key = (*s)->key;//copy pointers to data
@@ -174,17 +181,18 @@ bool tree_remove_element(tree_el_t **current_node,char *key, void **elem){
 				
 
 
+
  				
 			}else if((*current_node)->left != NULL){
 				//only left children
+                successor = (*current_node)->left;
 				tree_free_element(*current_node);
-				successor = (*current_node)->left;
 				*current_node = successor;
 
 			}else if((*current_node)->right != NULL){
 				//only right children
+                successor = (*current_node)->right;
 				tree_free_element(*current_node);
-				successor = (*current_node)->right;
 				*current_node = successor;
 			}
 
@@ -198,8 +206,6 @@ bool tree_remove_element(tree_el_t **current_node,char *key, void **elem){
 		}
 		
 	}
-
-	return false;
 }
 
 
@@ -228,6 +234,8 @@ void tree_get_inorder_help(tree_el_t * p, int* i, tree_el_t **result) {
     return;  
   } 
   tree_get_inorder_help(p->right,i, result);
+
+
 }
 
 
@@ -255,11 +263,13 @@ tree_el_t *tree_get_inorder_elem(tree_t *tree,int n){
 
 bool tree_remove(tree_t **tree,char *key, void **elem){
   
+
 	tree_el_t **current_node = &(*tree)->root_node;
 	(*tree)->count--;
 	return	tree_remove_element(current_node,key,elem);
 
 }
+
 
 void tree_dealloc(tree_t *tree,void dealloc_function(void *) ){
 
@@ -381,10 +391,17 @@ int main(){
 
 	//tree_remove(&tree,"M",&f);
 	//tree_remove(&tree,"M",&f);
+<<<<<<< HEAD
 
 
 	
 	
+=======
+
+
+	
+	
+>>>>>>> lucas
 
 
 	puts("REMOVE X");
