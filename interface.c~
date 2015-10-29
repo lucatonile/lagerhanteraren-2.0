@@ -241,7 +241,7 @@ void shopping_interf(db_t *db){
       }
 
       else
-	choice = Ask_char("\nVill du packa en till vara?[j]a/[n]ej: ");
+	choice = Ask_char("\nVill du packa en till vara?[j]a/[n]ej");
         choice = toupper(choice);
     }
 }
